@@ -5,53 +5,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SMS V1.0.1</title>
-    <!-- link to Tailwindcss -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.4/dist/tailwind.min.css" rel="stylesheet">
     <!-- link to our own css file -->
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <div class="container">
-        <!-- header text -->
-        <h1>Santa Management System (SMS v1.0.1)</h1>
+        <!-- Header -->
+        <h1>SMS v1.0.1</h1>
+        <h2>Little bundles of joy</h2>
 
-        <!-- inputfield + add button -->
-        <div class="input-fields">
-            <h2>Input the kids name and press add</h2>
-            <input type="text" id="kids" Placeholder="Name" required>
-            <input type="number" id="amount-gifts" Placeholder="Amount of gifts" required>
-            <input type="text" id="location" Placeholder="Location" required>
-        </div>
-        <div class="addbtn">
-            <button id="addKid">Add child</button>
-        </div>
+        <!-- Content Row -->
+        <div class="content-row">
+            <!-- Input Section -->
+            <div class="input-fields">
+                <input type="text" id="kids" placeholder="Name" required>
+                <input type="number" id="amount-gifts" placeholder="Goodie score" required>
+                <input type="text" id="location" placeholder="Location" required>
 
-        <!-- refresh and clear button -->
-        <div class="button-group">
-            <button id="ClearStorage">Clear the magic sleigh bag</button>
-        </div>
+                <!-- Buttons -->
+                <div class="button-group">
+                    <button id="addKid">Add child</button>
+                    <button id="ClearStorage">Clear the magic sleigh bag</button>
+                </div>
+            </div>
 
-        <div class="output">
-            <!-- saved section -->
-            <div class="output-temp">Placeholder for output temp</div>
-            <!-- header for output field -->
-            <h2>Localstorage</h2>
-            <div class="saved-output">
-                <div class="no-kids-message">Bag of children & presents</div>
+            <!-- Toy Section -->
+            <div class="toy-group">
+                <h2>Elven chest</h2>
+                <div class="available-toys">
+                    <p>MyLittle Pony</p>
+                    <p>Firetruck</p>
+                    <p>TMNT Leonardo</p>
+                </div>
             </div>
         </div>
-        <div class="toy-group">
-            <h2>Elven Chest</h2>
-            <div class="available-toys">
-                <p>MyLittle Pony</p>
-                <p>Firetruck</p>
-                <p>TMNT Leonardo</p>
+
+        <!-- Output Section -->
+        <div class="output">
+            <h2>Bag of children & presents</h2>
+            <div class="saved-output">
+                <div class="no-kids-message">No entries yet!</div>
             </div>
         </div>
     </div>
+
     <script src="app.js"></script>
 </body>
-<footer class="text-sm text-center p-5 text-gray-800">&copy; 2024 Team JSON Junction |  All Rights Reserved | SyntraPXL - Full-Stack Developer</footer>
+<!-- Trademark text -->
+<footer>&copy; 2024 Team JSON Junction | All Rights Reserved. | Full-Stack Developer</footer>
 
 </html>
