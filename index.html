@@ -4,33 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Santa Management System</title>
-    <link rel="stylesheet" href="style.css">
+    <title>SMS V1.0.1</title>
+    <!-- link to Tailwindcss -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.4/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
 <body>
     <div class="container">
         <!-- header text -->
-        <h1>Santa Management System (SMS)</h1>
+        <h1>Santa Management System (SMS v1.0.1)</h1>
 
         <!-- inputfield + add button -->
         <div class="input-fields">
             <h2>Input the kids name and press add</h2>
             <input type="text" id="kids" Placeholder="Name" required>
-            <button id="addKid">Add</button>
+            <input type="number" id="amount-gifts" Placeholder="Amount of gifts" required>
+            <input type="text" id="location" Placeholder="Location" required>
+        </div>
+        <div class="addbtn">
+            <button id="addKid">Add child</button>
         </div>
 
         <!-- refresh and clear button -->
         <div class="button-group">
-            <button id="clear">Refresh</button>
-            <button id="ClearStorage">Clear saved</button>
-        </div>
-
-        <h2>Click to add toys</h2>
-        <div class="toy-group">
-            <button id="Toy-1">Add Toy 1</button>
-            <button id="Toy-2">Add Toy 2</button>
-            <button id="Toy-3">Add Toy 3</button>
+            <button id="ClearStorage">Clear the magic sleigh bag</button>
         </div>
 
         <div class="output">
@@ -39,12 +36,20 @@
             <!-- header for output field -->
             <h2>Localstorage</h2>
             <div class="saved-output">
-                <div class="no-kids-message">Nothing saved yet!</div>
+                <div class="no-kids-message">Bag of children & presents</div>
+            </div>
+        </div>
+        <div class="toy-group">
+            <h2>Elven Chest</h2>
+            <div class="available-toys">
+                <p>MyLittle Pony</p>
+                <p>Firetruck</p>
+                <p>TMNT Leonardo</p>
             </div>
         </div>
     </div>
     <script src="app.js"></script>
 </body>
-<footer>&copy; Team JSON Junction | 2024 All Rights Reserved | SyntraPXL - Full-Stack Developer</footer>
+<footer class="text-sm text-center p-5 text-gray-800">&copy; 2024 Team JSON Junction |  All Rights Reserved | SyntraPXL - Full-Stack Developer</footer>
 
 </html>
