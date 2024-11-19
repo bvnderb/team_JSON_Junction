@@ -196,7 +196,7 @@ function populateList(){
         console.log(toyslist)
     })
     .catch();
-
+}
 // edit part
 function editPost(id) {
     // Show edit form and hide content for the selected post
