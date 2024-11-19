@@ -15,6 +15,8 @@ function fetchdata() {
                 output.innerHTML += `
                 <div class ="kids-item" id="kids-${kids.id}">
                     <span class="kids-content">${kids.kidname} ${kids.amountGifts} ${kids.location}</span>
+
+                <select id="toyList" class="kids-item"><option>Toy selection</option></select>
                 
                 <div class="edit-form" style="display: none;">
                             <input type="text" class="edit-name" value="${kids.name}">
@@ -143,10 +145,9 @@ function fetchtoy() {
         .then(data => {
             const sortedData = data.sort((a, b) => b.timestamp - a.timestamp);
             sortedData.forEach(toys => {
-                console.log(toys);
                 availableToys.innerHTML += `
                 <div class ="available-toys" id="toys-${toys.id}">
-                    <span class="available-toys">${toys.toyname}</span>
+                    <span>${toys.toyname}</span>
                 
                 <div class="edit-form" style="display: none;">
                             <input type="text" class="edit-name" value="">
@@ -158,7 +159,7 @@ function fetchtoy() {
         .catch(e => console.error('error fetching toy:', e));
 }
 
-// Add new child
+// Add new toy
 document.getElementById('toyBtn').addEventListener('click', () => {
     const newToy = {
         toyname: document.getElementById('toyInput').value
@@ -175,11 +176,25 @@ document.getElementById('toyBtn').addEventListener('click', () => {
         .then(() => {
             document.getElementById('toyInput').value = "";
             fetchtoy();
+            populateList();
 
         })
         .catch(e => console.error("error adding kid.", e))
+
 })
 
+function populateList(){
+    const toyslist = [];
+    fetch(urlToys)
+    .then(res => res.json())
+    .then(function(result){
+        for(let i = 0; i<result.length; i++) {
+            toyslist.push(result[i])
+        }
+        console.log(toyslist)
+    })
+    .catch();
+}
 
 
 
