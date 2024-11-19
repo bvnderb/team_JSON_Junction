@@ -25,21 +25,21 @@ function fetchdata() {
                         </div>
                         <div class="button-group">
                             <button onclick="editPost('${kids.id}')">Edit</button>
-                            <button onclick="saveToLocal('${kids.id}', '${kids.kidname}', ${kids.amountGifts || 0}, ${kids.location})">Save</button>
+                            <button onclick="saveToLocal('${kids.id}', '${kids.kidname}', ${kids.amountGifts || 0}, '${kids.location}')">Save</button>
                             <button onclick="deletePost('${kids.id}')">Delete</button>
                         </div>
                 </div>
                 `;
             });
         })
-        .catch(e => console.error('error fetching child:', e)); 
+        .catch(e => console.error('error fetching child:', e));
 }
 
 // Add new child
 document.getElementById('addkid').addEventListener('click', () => {
     const newKid = {
         kidname: document.getElementById('kidname').value,
-        amountGifts: document.getElementById("amountGifts").value,
+        amountGifts: document.getElementById('amountGifts').value,
         location: document.getElementById('location').value
     };
 
@@ -50,17 +50,20 @@ document.getElementById('addkid').addEventListener('click', () => {
         },
         body: JSON.stringify(newKid)
     })
-    .then(res => res.json())
-    .then(() => {
-        fetchdata();
-        document.getElementById("kidname").value = "";
-    })
-    .catch(e => console.error("error adding kid.", e))
-}) 
+        .then(res => res.json())
+        .then(() => {
+            fetchdata();
+            document.getElementById('kidname').value = "";
+            document.getElementById('amountGifts').value = "";
+            document.getElementById('location').value = "";
+
+        })
+        .catch(e => console.error("error adding kid.", e))
+})
 
 
 // Save post to localStorage
-function saveToLocal(kidId, kidname, amountGifts, location ) {
+function saveToLocal(kidId, kidname, amountGifts, location) {
     try {
         const kid = {
             id: kidId,  // kidId is received as a string
@@ -68,9 +71,9 @@ function saveToLocal(kidId, kidname, amountGifts, location ) {
             gifts: amountGifts,
             location: location
         };
-        
+
         const savedKids = JSON.parse(localStorage.getItem('savedKids') || '[]');
-        
+
         if (!savedKids.some(k => k.id === kid.id)) {  // Comparing strings with strings
             savedKids.push(kid);
             localStorage.setItem('savedKids', JSON.stringify(savedKids));
@@ -88,7 +91,7 @@ function loadSavedPosts() {
     try {
         const savedPosts = JSON.parse(localStorage.getItem('savedPosts') || '[]');
         savedOutput.innerHTML = '';
-        
+
         if (savedPosts.length === 0) {
             const noPostsMessage = document.createElement('div');
             noPostsMessage.className = 'no-posts-message';
@@ -119,8 +122,8 @@ function deletePost(id) {
     fetch(`${url}/${id}`, {
         method: 'DELETE'
     })
-    .then(() => fetchdata())
-    .catch(e => console.error('Error deleting post:', e));
+        .then(() => fetchdata())
+        .catch(e => console.error('Error deleting post:', e));
 }
 
 // Clear localStorage
