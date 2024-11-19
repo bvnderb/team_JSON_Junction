@@ -53,7 +53,7 @@ input:focus::-webkit-input-placeholder {
 
 
 /* Input fields */
-#kidname, #amountGifts, #location, #toyInput {
+#kidsName, #amountGifts, #location, #toyInput {
 
     background-color: rgba(255, 255, 255, 0.1);
     color: white;

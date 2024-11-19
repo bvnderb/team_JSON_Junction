@@ -1,3 +1,9 @@
+document.addEventListener('DOMContentLoaded', () => {
+    fetchdata();
+    fetchKids();
+    loadSavedKids();
+    fetchtoy();
+});
 // declare global variables and placeholders
 
 const url = 'http://localhost:3000/kids';
@@ -14,12 +20,12 @@ function fetchdata() {
             sortedData.forEach(kids => {
                 output.innerHTML += `
                 <div class ="kids-item" id="kids-${kids.id}">
-                    <span class="kids-content">${kids.kidname} ${kids.amountGifts} ${kids.location}</span>
+                    <span class="kids-content">${kids.kidsName} ${kids.amountGifts} ${kids.location}</span>
 
                 <select id="toyList" class="kids-item"><option>Toy selection</option></select>
                 
                 <div class="edit-form" style="display: none;">
-                            <input type="text" class="edit-name" value="${kids.name}">
+                            <input type="text" class="edit-name" value="${kids.kidsName}">
                             <input type="number" class="edit-amount" value="${kids.amountGifts || 0}">
                             <input type="text" class="edit-location" value="${kids.location}">
                             <button class="smallbutton" onclick="saveEdit('${kids.id}')">Save</button>
@@ -27,7 +33,7 @@ function fetchdata() {
                         </div>
                         <div class="button-group">
                             <button onclick="editPost('${kids.id}')">Edit</button>
-                            <button onclick="saveToLocal('${kids.id}', '${kids.kidname}', ${kids.amountGifts || 0}, '${kids.location}')">Save</button>
+                            <button onclick="saveToLocal('${kids.id}', '${kids.kidsName}', ${kids.amountGifts || 0}, '${kids.location}')">Save</button>
                             <button onclick="deletePost('${kids.id}')">Delete</button>
                         </div>
                 </div>
@@ -40,7 +46,7 @@ function fetchdata() {
 // Add new child
 document.getElementById('addkid').addEventListener('click', () => {
     const newKid = {
-        kidname: document.getElementById('kidname').value,
+        kidsName: document.getElementById('kidsName').value,
         amountGifts: document.getElementById('amountGifts').value,
         location: document.getElementById('location').value
     };
@@ -55,7 +61,7 @@ document.getElementById('addkid').addEventListener('click', () => {
         .then(res => res.json())
         .then(() => {
             fetchdata();
-            document.getElementById('kidname').value = "";
+            document.getElementById('kidsName').value = "";
             document.getElementById('amountGifts').value = "";
             document.getElementById('location').value = "";
 
@@ -63,6 +69,37 @@ document.getElementById('addkid').addEventListener('click', () => {
         .catch(e => console.error("error adding kid.", e))
 })
 
+// Load saved posts from localStorage
+function loadSavedPosts() {
+    try {
+        const savedPosts = JSON.parse(localStorage.getItem('savedPosts') || '[]');
+        savedOutput.innerHTML = '';
+
+        if (savedPosts.length === 0) {
+            const noPostsMessage = document.createElement('div');
+            noPostsMessage.className = 'no-posts-message';
+            noPostsMessage.textContent = 'No saved posts yet!';
+            savedOutput.appendChild(noPostsMessage);
+            return;
+        }
+
+        // Sort saved posts by timestamp in descending order
+        savedPosts.sort((a, b) => b.timestamp - a.timestamp);
+        savedPosts.forEach(post => {
+            console.log(post)
+            const postDiv = document.createElement('div');
+            postDiv.className = 'post-item';
+            postDiv.innerHTML = `
+                <span>${post.name || 'Unknown Name'} (${post.amount || 0}) (${post.location || 'Unknown Location'})</span>
+                <button onclick="removeFromSaved('${post.id}')">Remove</button>
+            `;
+            savedOutput.appendChild(postDiv);
+        });
+    } catch (error) {
+        console.error('Error loading saved posts:', error);
+        localStorage.setItem('savedPosts', '[]');
+    }
+}
 
 // Save post to localStorage
 function saveToLocal(kidId, kidname, amountGifts, location) {
@@ -90,37 +127,7 @@ function saveToLocal(kidId, kidname, amountGifts, location) {
     }
 }
 
-// Load saved posts from localStorage
-function loadSavedPosts() {
-    try {
-        const savedPosts = JSON.parse(localStorage.getItem('savedPosts') || '[]');
-        savedOutput.innerHTML = '';
 
-        if (savedPosts.length === 0) {
-            const noPostsMessage = document.createElement('div');
-            noPostsMessage.className = 'no-posts-message';
-            noPostsMessage.textContent = 'No saved posts yet!';
-            savedOutput.appendChild(noPostsMessage);
-            return;
-        }
-
-        // Sort saved posts by timestamp in descending order
-        savedPosts.sort((a, b) => b.timestamp - a.timestamp);
-        savedPosts.forEach(post => {
-            console.log(post)
-            const postDiv = document.createElement('div');
-            postDiv.className = 'post-item';
-            postDiv.innerHTML = `
-                <span>${post.name} (${post.amount || 0}) (${post.location})</span>
-                <button onclick="removeFromSaved('${post.id}')">Remove</button>
-            `;
-            savedOutput.appendChild(postDiv);
-        });
-    } catch (error) {
-        console.error('Error loading saved posts:', error);
-        localStorage.setItem('savedPosts', '[]');
-    }
-}
 
 // Delete post
 function deletePost(id) {
@@ -153,6 +160,8 @@ function fetchtoy() {
                 <div class="edit-form" style="display: none;">
                             <input type="text" class="edit-name" value="">
                         </div>
+
+                        <button onclick="deletePost('${toys.id}')">X</button>
                 </div>
                 `;
             });
@@ -183,6 +192,32 @@ document.getElementById('toyBtn').addEventListener('click', () => {
         .catch(e => console.error("error adding kid.", e))
 
 })
+
+function deletePost(toyId) {
+    fetch(`${urlToys}/${toyId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error ('Failed to delete the toy');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Toy deleted:', data);
+
+        const toyElement = document.getElementById(`toys-${toyId}`);
+        if (toyElement) {
+            toyElement.remove();
+        }
+    })
+    .catch(error => {
+        console.error('Error deleting toy:', error);
+    });
+}
 
 
 function populateList(){
@@ -228,8 +263,8 @@ function saveEdit(id) {
 
     // Create updated post object
     const updatedPost = {
-        name: newName,
-        amount: newAmount,
+        kidsName: newName,
+        amountGifts: newAmount,
         location: newLocation,
         timestamp: Date.now() // Update timestamp
     };
@@ -250,6 +285,5 @@ function saveEdit(id) {
     .catch(e => console.error('Error updating post:', e));
 }
 
-fetchdata();
-loadSavedPosts();
-fetchtoy();
+
+
