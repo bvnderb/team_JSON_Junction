@@ -69,8 +69,8 @@ function saveToLocal(kidId, kidname, amountGifts, location) {
     try {
         const kid = {
             id: kidId,
-            kidname: kidname,  
-            amountGifts: amountGifts,
+            name: kidname,  
+            amount: amountGifts,
             location: location,
             timestamp: Date.now()  
         };
@@ -107,10 +107,11 @@ function loadSavedPosts() {
         // Sort saved posts by timestamp in descending order
         savedPosts.sort((a, b) => b.timestamp - a.timestamp);
         savedPosts.forEach(post => {
+            console.log(post)
             const postDiv = document.createElement('div');
             postDiv.className = 'post-item';
             postDiv.innerHTML = `
-                <span>${post.kidname} (${post.location}) (${post.amountGifts || 0})</span>
+                <span>${post.name} (${post.amount || 0}) (${post.location})</span>
                 <button onclick="removeFromSaved('${post.id}')">Remove</button>
             `;
             savedOutput.appendChild(postDiv);
@@ -183,6 +184,7 @@ document.getElementById('toyBtn').addEventListener('click', () => {
 
 })
 
+
 function populateList(){
     const toyslist = [];
     fetch(urlToys)
@@ -194,9 +196,59 @@ function populateList(){
         console.log(toyslist)
     })
     .catch();
+
+// edit part
+function editPost(id) {
+    // Show edit form and hide content for the selected post
+    const postDiv = document.getElementById(`kids-${id}`);
+    postDiv.querySelector('.kids-content').style.display = 'none';
+    postDiv.querySelector('.edit-form').style.display = 'block';
+    postDiv.querySelector('.button-group').style.display = 'none';
+
 }
 
+function cancelEdit(id) {
+    // Hide edit form and show content
+    const postDiv = document.getElementById(`kids-${id}`);
+    postDiv.querySelector('.kids-content').style.display = 'block';
+    postDiv.querySelector('.edit-form').style.display = 'none';
+    postDiv.querySelector('.button-group').style.display = 'block';
+}
 
+function saveEdit(id) {
+    // Get the edited values
+    const postDiv = document.getElementById(`kids-${id}`);
+    console.log("Post Div:", postDiv); // Debugging
+    const newName = postDiv.querySelector('.edit-name').value;
+    const newAmount = parseInt(postDiv.querySelector('.edit-amount').value);
+    const newLocation = postDiv.querySelector('.edit-location').value;
+    console.log("New Name:", newName); // Debugging
+    console.log("New Amount:", newAmount); // Debugging
+    console.log("New Location:", newLocation); // Debugging
+
+    // Create updated post object
+    const updatedPost = {
+        name: newName,
+        amount: newAmount,
+        location: newLocation,
+        timestamp: Date.now() // Update timestamp
+    };
+
+    // Send PUT request to update the post
+    fetch(`${url}/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedPost)
+    })
+    .then(res => res.json())
+    .then(() => {
+        // Refresh the posts display
+        fetchdata();
+    })
+    .catch(e => console.error('Error updating post:', e));
+}
 
 fetchdata();
 loadSavedPosts();
