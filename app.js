@@ -58,6 +58,22 @@ document.getElementById('addkid').addEventListener('click', () => {
         .catch(e => console.error("error adding kid."))
 })
 
+// Delete post
+function deletePost(id) {
+    fetch(`${url}/${id}`, {
+        method: 'DELETE'
+    })
+    .then(() => fetchdata())
+    .catch(e => console.error('Error deleting post:', e));
+}
+
+// Clear localStorage
+document.getElementById('clearStorage').addEventListener('click', () => {
+    if (confirm('Are you sure you want to clear all saved posts?')) {
+        localStorage.removeItem('savedPosts');
+        loadSavedPosts();
+    }
+});
 
 fetchdata();
 loadSavedPosts();
