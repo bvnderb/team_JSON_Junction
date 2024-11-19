@@ -112,7 +112,7 @@ button:hover {
 }
 
 /* Output section */
-.output {
+#output, .savedoutput {
 
     width: 100%;
     text-align: left;

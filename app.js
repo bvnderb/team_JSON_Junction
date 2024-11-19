@@ -6,20 +6,33 @@ const output = document.getElementById('output');
 const savedOutput = document.getElementById('savedoutput')
 
 function fetchdata() {
-    output.innerHTML="";
+    output.innerHTML = "";
     fetch(url)
         .then(res => res.json())
         .then(data => {
-            const sortedData = data.sort((a,b) => b.timestamp - a.timestamp);
+            const sortedData = data.sort((a, b) => b.timestamp - a.timestamp);
             sortedData.forEach(kids => {
                 output.innerHTML += `
                 <div class ="kids-item" id="kids-${kids.id}">
                     <span class="kids-content">${kids.kidname} ${kids.amountGifts} ${kids.location}</span>
+                
+                <div class="edit-form" style="display: none;">
+                            <input type="text" class="edit-name" value="${kids.name}">
+                            <input type="number" class="edit-amount" value="${kids.amountGifts || 0}">
+                            <input type="text" class="edit-location" value="${kids.location}">
+                            <button class="smallbutton" onclick="saveEdit('${kids.id}')">Save</button>
+                            <button class="smallbutton" onclick="cancelEdit('${kids.id}')">Close</button>
+                        </div>
+                        <div class="button-group">
+                            <button onclick="editPost('${kids.id}')">Edit</button>
+                            <button onclick="saveToLocal('${kids.id}', '${kids.name}', ${kids.amountGifts || 0}, ${kids.location}, ${kids.timestamp})">Save</button>
+                            <button onclick="deletePost('${kids.id}')">Delete</button>
+                        </div>
                 </div>
                 `;
             });
         })
-        .catch(e => console.error('error fetching child:', e)); 
+        .catch(e => console.error('error fetching child:', e));
 }
 
 // Add new child
@@ -37,13 +50,13 @@ document.getElementById('addkid').addEventListener('click', () => {
         },
         body: JSON.stringify(newKid)
     })
-    .then(res => res.json())
-    .then(() => {
-        fetchdata();
-        document.getElementById("kidname").value = "";
-    })
-    .catch(e => console.error("error adding kid."))
-}) 
+        .then(res => res.json())
+        .then(() => {
+            fetchdata();
+            document.getElementById("kidname").value = "";
+        })
+        .catch(e => console.error("error adding kid."))
+})
 
 
 fetchdata();
