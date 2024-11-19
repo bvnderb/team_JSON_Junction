@@ -13,6 +13,12 @@
       "kidname": "Bob",
       "amountGifts": "7",
       "location": "Hasselt"
+    },
+    {
+      "id": "3d12",
+      "kidname": "Bert",
+      "amountGifts": "8",
+      "location": "Brugge"
     }
   ],
   "toys": []
