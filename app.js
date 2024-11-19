@@ -1,6 +1,7 @@
 // declare global variables and placeholders
 
 const url = 'http://localhost:3000/kids';
+const urlToys = 'http://localhost:3000/toys';
 const output = document.getElementById('output');
 const savedOutput = document.getElementById('savedoutput')
 
@@ -135,6 +136,53 @@ document.getElementById('clearStorage').addEventListener('click', () => {
     }
 });
 
+function fetchtoy() {
+    availableToys.innerHTML = "";
+    fetch(urlToys)
+        .then(res => res.json())
+        .then(data => {
+            const sortedData = data.sort((a, b) => b.timestamp - a.timestamp);
+            sortedData.forEach(toys => {
+                console.log(toys);
+                availableToys.innerHTML += `
+                <div class ="available-toys" id="toys-${toys.id}">
+                    <span class="available-toys">${toys.toyname}</span>
+                
+                <div class="edit-form" style="display: none;">
+                            <input type="text" class="edit-name" value="">
+                        </div>
+                </div>
+                `;
+            });
+        })
+        .catch(e => console.error('error fetching toy:', e));
+}
+
+// Add new child
+document.getElementById('toyBtn').addEventListener('click', () => {
+    const newToy = {
+        toyname: document.getElementById('toyInput').value
+    };
+
+    fetch(urlToys, {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(newToy)
+    })
+        .then(res => res.json())
+        .then(() => {
+            document.getElementById('toyInput').value = "";
+            fetchtoy();
+
+        })
+        .catch(e => console.error("error adding kid.", e))
+})
+
+
+
 
 fetchdata();
 loadSavedPosts();
+fetchtoy();
