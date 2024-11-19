@@ -2,7 +2,7 @@
 
 const url = 'http://localhost:3000/kids';
 const output = document.getElementById('output');
-const savedOutput = document.getElementById('savedpost')
+const savedOutput = document.getElementById('savedoutput')
 
 function fetchdata() {
     output.innerHTML="";
@@ -13,7 +13,7 @@ function fetchdata() {
             sortedData.forEach(kids => {
                 output.innerHTML += `
                 <div class ="kids-item" id="kids-${kids.id}">
-                    <span class="kids-content">${kids.name}</span>
+                    <span class="kids-content">${kids.kidname} ${kids.amountGifts} ${kids.location}</span>
                 </div>
                 `;
             });
@@ -25,6 +25,8 @@ function fetchdata() {
 document.getElementById('addkid').addEventListener('click', () => {
     const newKid = {
         kidname: document.getElementById('kidname').value,
+        amountGifts: document.getElementById("amountGifts").value,
+        location: document.getElementById('location').value
     };
 
     fetch(url, {
@@ -36,11 +38,12 @@ document.getElementById('addkid').addEventListener('click', () => {
     })
     .then(res => res.json())
     .then(() => {
-        fetchData();
+        fetchdata();
         document.getElementById("kidname").value = "";
     })
     .catch(e => console.error("error adding kid."))
 }) 
+
 
 fetchdata();
 loadSavedPosts();
