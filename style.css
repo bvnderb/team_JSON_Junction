@@ -40,26 +40,33 @@ button:hover {
     background-color: #ff3333;
 }
 
-/* Placeholder Styling */
+/* Placeholder styling */
 ::placeholder {
     color: white;
     font-weight: bold;
 }
 
+
 /* Input Fields */
 #kidname, #amountGifts, #location {
+
+/* Input fields */
+#kids, #amount-gifts, #location {
+
     background-color: rgba(255, 255, 255, 0.1);
     color: white;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 10px;
-    width: calc(33.33% - 20px); /* Adjusts for 3 inputs */
-    margin-right: 5px;
+    width: 300px;
+    margin-right: 25px;
     margin-top: 5px;
+    margin-left: 10px;
+    justify-content: space-between;
 }
 
-/* Container Styling */
+/* Container styling */
 .container {
     width: 90%;
     margin: 0 auto;
@@ -69,7 +76,7 @@ button:hover {
     gap: 20px;
 }
 
-/* Row for Input Fields and Toy Chest */
+/* Row for input fields and toy chest */
 .content-row {
     display: flex;
     justify-content: space-between;
@@ -109,6 +116,10 @@ button:hover {
 
 /* Output Section */
 .savedoutput {
+
+/* Output section */
+.output {
+
     width: 100%;
     text-align: left;
     border: 1px solid #fff;
@@ -121,7 +132,7 @@ button:hover {
     margin-bottom: 10px;
 }
 
-/* Toy Chest Item Styling */
+/* Toy chest item styling */
 .available-toys p {
     margin: 10px 0;
     padding: 10px;
