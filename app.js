@@ -125,11 +125,9 @@ function saveToLocal(kidId, kidname, amountGifts, location) {
     }
 }
 
-
-
 // Delete post
-function deletePost(id) {
-    fetch(`${url}/${id}`, {
+function deletePost(kidId) {
+    fetch(`${url}/${kidId}`, {
         method: 'DELETE'
     })
         .then(() => fetchdata())
@@ -159,7 +157,7 @@ function fetchtoy() {
                             <input type="text" class="edit-name" value="">
                         </div>
 
-                        <button onclick="deletePost('${toys.id}')">X</button>
+                        <button onclick="deleteToy('${toys.id}')">X</button>
                 </div>
                 `;
             });
@@ -191,7 +189,7 @@ document.getElementById('toyBtn').addEventListener('click', () => {
 
 })
 
-function deletePost(toyId) {
+function deleteToy(toyId) {
     fetch(`${urlToys}/${toyId}`, {
         method: 'DELETE',
         headers: {
@@ -217,7 +215,6 @@ function deletePost(toyId) {
     });
 }
 
-
 function populateList(){
     const toyslist = [];
     fetch(urlToys)
@@ -230,6 +227,7 @@ function populateList(){
     })
     .catch();
 }
+
 // edit part
 function editPost(id) {
     // Show edit form and hide content for the selected post
@@ -283,6 +281,7 @@ function saveEdit(id) {
     .catch(e => console.error('Error updating post:', e));
 }
 
+// remove from local storage
 function removeFromSaved(postId) {
     try {
         const savedPosts = JSON.parse(localStorage.getItem('savedPosts') || '[]');
