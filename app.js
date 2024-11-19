@@ -25,14 +25,14 @@ function fetchdata() {
                         </div>
                         <div class="button-group">
                             <button onclick="editPost('${kids.id}')">Edit</button>
-                            <button onclick="saveToLocal('${kids.id}', '${kids.name}', ${kids.amountGifts || 0}, ${kids.location}, ${kids.timestamp})">Save</button>
+                            <button onclick="saveToLocal('${kids.id}', '${kids.kidname}', ${kids.amountGifts || 0}, ${kids.location})">Save</button>
                             <button onclick="deletePost('${kids.id}')">Delete</button>
                         </div>
                 </div>
                 `;
             });
         })
-        .catch(e => console.error('error fetching child:', e));
+        .catch(e => console.error('error fetching child:', e)); 
 }
 
 // Add new child
@@ -50,14 +50,68 @@ document.getElementById('addkid').addEventListener('click', () => {
         },
         body: JSON.stringify(newKid)
     })
-        .then(res => res.json())
-        .then(() => {
-            fetchdata();
-            document.getElementById("kidname").value = "";
-        })
-        .catch(e => console.error("error adding kid."))
-})
+    .then(res => res.json())
+    .then(() => {
+        fetchdata();
+        document.getElementById("kidname").value = "";
+    })
+    .catch(e => console.error("error adding kid.", e))
+}) 
 
+// Save post to localStorage
+function saveToLocal(kidId, kidname, amountGifts, location ) {
+    try {
+        const kid = {
+            id: kidId,  // kidId is received as a string
+            name: kidname,
+            gifts: amountGifts,
+            location: location
+        };
+        
+        const savedKids = JSON.parse(localStorage.getItem('savedKids') || '[]');
+        
+        if (!savedKids.some(k => k.id === kid.id)) {  // Comparing strings with strings
+            savedKids.push(kid);
+            localStorage.setItem('savedKids', JSON.stringify(savedKids));
+            loadSavedPosts();
+        } else {
+            alert('This kid is already registered!');
+        }
+    } catch (error) {
+        console.error('Error saving child:', error);
+    }
+}
+
+// Load saved posts from localStorage
+function loadSavedPosts() {
+    try {
+        const savedPosts = JSON.parse(localStorage.getItem('savedPosts') || '[]');
+        savedOutput.innerHTML = '';
+        
+        if (savedPosts.length === 0) {
+            const noPostsMessage = document.createElement('div');
+            noPostsMessage.className = 'no-posts-message';
+            noPostsMessage.textContent = 'No saved posts yet!';
+            savedOutput.appendChild(noPostsMessage);
+            return;
+        }
+
+        // Sort saved posts by timestamp in descending order
+        savedPosts.sort((a, b) => b.timestamp - a.timestamp);
+        savedPosts.forEach(post => {
+            const postDiv = document.createElement('div');
+            postDiv.className = 'post-item';
+            postDiv.innerHTML = `
+                <span>${post.kidname} (${post.location}) (${post.amountGifts || 0})</span>
+                <button onclick="removeFromSaved('${post.id}')">Remove</button>
+            `;
+            savedOutput.appendChild(postDiv);
+        });
+    } catch (error) {
+        console.error('Error loading saved posts:', error);
+        localStorage.setItem('savedPosts', '[]');
+    }
+}
 
 fetchdata();
 loadSavedPosts();
