@@ -31,14 +31,14 @@ function fetchdata() {
                 `;
             });
         })
-        .catch(e => console.error('error fetching child:', e)); 
+        .catch(e => console.error('error fetching child:', e));
 }
 
 // Add new child
 document.getElementById('addkid').addEventListener('click', () => {
     const newKid = {
         kidname: document.getElementById('kidname').value,
-        amountGifts: document.getElementById("amountGifts").value,
+        amountGifts: document.getElementById('amountGifts').value,
         location: document.getElementById('location').value
     };
 
@@ -49,13 +49,16 @@ document.getElementById('addkid').addEventListener('click', () => {
         },
         body: JSON.stringify(newKid)
     })
-    .then(res => res.json())
-    .then(() => {
-        fetchdata();
-        document.getElementById("kidname").value = "";
-    })
-    .catch(e => console.error("error adding kid.", e))
-}) 
+        .then(res => res.json())
+        .then(() => {
+            fetchdata();
+            document.getElementById('kidname').value = "";
+            document.getElementById('amountGifts').value = "";
+            document.getElementById('location').value = "";
+
+        })
+        .catch(e => console.error("error adding kid.", e))
+})
 
 
 // Save post to localStorage
@@ -68,6 +71,7 @@ function saveToLocal(kidId, kidname, amountGifts, location) {
             location: location,
             timestamp: Date.now()  
         };
+
         
         const savedPosts = JSON.parse(localStorage.getItem('savedPosts') || '[]');
         
@@ -88,7 +92,7 @@ function loadSavedPosts() {
     try {
         const savedPosts = JSON.parse(localStorage.getItem('savedPosts') || '[]');
         savedOutput.innerHTML = '';
-        
+
         if (savedPosts.length === 0) {
             const noPostsMessage = document.createElement('div');
             noPostsMessage.className = 'no-posts-message';
@@ -119,8 +123,8 @@ function deletePost(id) {
     fetch(`${url}/${id}`, {
         method: 'DELETE'
     })
-    .then(() => fetchdata())
-    .catch(e => console.error('Error deleting post:', e));
+        .then(() => fetchdata())
+        .catch(e => console.error('Error deleting post:', e));
 }
 
 // Clear localStorage
