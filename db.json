@@ -1,18 +1,28 @@
 {
   "kids": [
     {
-      "id": "6047",
-      "kidname": "ber"
-    },
-    {
-      "id": "5b65",
-      "kidname": "ded"
-    },
-    {
-      "id": "dea8",
-      "kidname": "Bob",
-      "amountGifts": "7",
+      "id": "24e0",
+      "kidname": "Col",
+      "amountGifts": "4",
       "location": "Hasselt"
+    },
+    {
+      "id": "a4b0",
+      "kidname": "Brent",
+      "amountGifts": "5",
+      "location": "Hasselt"
+    },
+    {
+      "id": "745d",
+      "kidname": "Karel",
+      "amountGifts": "3",
+      "location": "Bree"
+    },
+    {
+      "id": "d718",
+      "kidname": "karel",
+      "amountGifts": "5",
+      "location": "Bree"
     }
   ],
   "toys": []
