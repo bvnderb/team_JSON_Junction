@@ -1,14 +1,6 @@
 {
   "kids": [
     {
-      "id": "6047",
-      "kidname": "ber"
-    },
-    {
-      "id": "5b65",
-      "kidname": "ded"
-    },
-    {
       "id": "dea8",
       "kidname": "Bob",
       "amountGifts": "7",
@@ -21,5 +13,14 @@
       "location": "Brugge"
     }
   ],
-  "toys": []
+  "toys": [
+    {
+      "id": "f010",
+      "kidname": "firetruck"
+    },
+    {
+      "id": "faa0",
+      "kidname": "firetruck"
+    }
+  ]
 }

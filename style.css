@@ -132,7 +132,7 @@ input:focus::-webkit-input-placeholder {
 }
 
 /* Toy chest item styling */
-.available-toys p {
+.available-toys, #availableToys p {
     margin: 10px 0;
     padding: 10px;
     border: 1px solid #fff;
