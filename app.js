@@ -59,7 +59,7 @@ document.getElementById('addkid').addEventListener('click', () => {
 }) 
 
 // Save post to localStorage
-function saveToLocal(kidId, kidname, amountGifts, location ) {
+function saveToLocal(kidId, kidname, amountGifts, location) {
     try {
         const kid = {
             id: kidId,  // kidId is received as a string
