@@ -143,12 +143,13 @@ function fetchtoy() {
         .then(data => {
             const sortedData = data.sort((a, b) => b.timestamp - a.timestamp);
             sortedData.forEach(toys => {
+                console.log(toys);
                 availableToys.innerHTML += `
                 <div class ="available-toys" id="toys-${toys.id}">
-                    <span class="available-toys">${toys.toyInput}</span>
+                    <span class="available-toys">${toys.toyname}</span>
                 
                 <div class="edit-form" style="display: none;">
-                            <input type="text" class="edit-name" value="${toys.toyInput}">
+                            <input type="text" class="edit-name" value="">
                         </div>
                 </div>
                 `;
@@ -160,7 +161,7 @@ function fetchtoy() {
 // Add new child
 document.getElementById('toyBtn').addEventListener('click', () => {
     const newToy = {
-        kidname: document.getElementById('toyInput').value
+        toyname: document.getElementById('toyInput').value
     };
 
     fetch(urlToys, {
@@ -172,8 +173,8 @@ document.getElementById('toyBtn').addEventListener('click', () => {
     })
         .then(res => res.json())
         .then(() => {
-            fetchdata();
             document.getElementById('toyInput').value = "";
+            fetchtoy();
 
         })
         .catch(e => console.error("error adding kid.", e))
@@ -184,3 +185,4 @@ document.getElementById('toyBtn').addEventListener('click', () => {
 
 fetchdata();
 loadSavedPosts();
+fetchtoy();
