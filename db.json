@@ -1,0 +1,19 @@
+{
+  "kids": [
+    {
+      "id": "6047",
+      "kidname": "ber"
+    },
+    {
+      "id": "5b65",
+      "kidname": "ded"
+    },
+    {
+      "id": "dea8",
+      "kidname": "Bob",
+      "amountGifts": "7",
+      "location": "Hasselt"
+    }
+  ],
+  "toys": []
+}
