@@ -47,11 +47,8 @@ button:hover {
 }
 
 
-/* Input Fields */
-#kidname, #amountGifts, #location {
-
 /* Input fields */
-#kids, #amount-gifts, #location {
+#kidname, #amountGifts, #location {
 
     background-color: rgba(255, 255, 255, 0.1);
     color: white;
@@ -113,9 +110,6 @@ button:hover {
     gap: 10px;
     margin-top: 20px;
 }
-
-/* Output Section */
-.savedoutput {
 
 /* Output section */
 .output {
