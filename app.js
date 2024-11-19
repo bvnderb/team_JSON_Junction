@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     fetchdata();
-    fetchKids();
-    loadSavedKids();
     fetchtoy();
 });
 // declare global variables and placeholders
@@ -285,5 +283,16 @@ function saveEdit(id) {
     .catch(e => console.error('Error updating post:', e));
 }
 
-
+function removeFromSaved(postId) {
+    try {
+        const savedPosts = JSON.parse(localStorage.getItem('savedPosts') || '[]');
+        // Convert postId to string for consistent comparison
+        const postIdString = String(postId);
+        const updatedPosts = savedPosts.filter(post => post.id !== postIdString);
+        localStorage.setItem('savedPosts', JSON.stringify(updatedPosts));
+        loadSavedPosts();
+    } catch (error) {
+        console.error('Error removing saved post:', error);
+    }
+}
 
