@@ -1,4 +1,3 @@
-
 // declare global variables and placeholders
 
 const url = 'http://localhost:3000/kids';
@@ -66,20 +65,22 @@ document.getElementById('addkid').addEventListener('click', () => {
 function saveToLocal(kidId, kidname, amountGifts, location) {
     try {
         const kid = {
-            id: kidId,  // kidId is received as a string
-            name: kidname,
-            gifts: amountGifts,
-            location: location
+            id: kidId,
+            kidname: kidname,  
+            amountGifts: amountGifts,
+            location: location,
+            timestamp: Date.now()  
         };
 
-        const savedKids = JSON.parse(localStorage.getItem('savedKids') || '[]');
-
-        if (!savedKids.some(k => k.id === kid.id)) {  // Comparing strings with strings
-            savedKids.push(kid);
-            localStorage.setItem('savedKids', JSON.stringify(savedKids));
+        
+        const savedPosts = JSON.parse(localStorage.getItem('savedPosts') || '[]');
+        
+        if (!savedPosts.some(k => k.id === kid.id)) {
+            savedPosts.push(kid);
+            localStorage.setItem('savedPosts', JSON.stringify(savedPosts));
             loadSavedPosts();
         } else {
-            alert('This kid is already registered!');
+            alert('This kid is already saved!');
         }
     } catch (error) {
         console.error('Error saving child:', error);
@@ -137,4 +138,3 @@ document.getElementById('clearStorage').addEventListener('click', () => {
 
 fetchdata();
 loadSavedPosts();
-
