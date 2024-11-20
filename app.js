@@ -88,7 +88,7 @@ function loadSavedPosts() {
             const postDiv = document.createElement('div');
             postDiv.className = 'post-item';
             postDiv.innerHTML = `
-                <span>${post.name || 'Unknown Name'} (${post.amount || 0}) (${post.location || 'Unknown Location'})</span>
+                <span>${post.name || 'Unknown Name'} (${post.amount || 0}) (${post.location || 'Unknown Location'}) ${getToy()}</span>
                 <button onclick="removeFromSaved('${post.id}')">Remove</button>
             `;
             savedOutput.appendChild(postDiv);
@@ -100,13 +100,14 @@ function loadSavedPosts() {
 }
 
 // Save post to localStorage
-function saveToLocal(kidId, kidname, amountGifts, location) {
+function saveToLocal(kidId, kidname, amountGifts, location, toyname) {
     try {
         const kid = {
             id: kidId,
             name: kidname,  
             amount: amountGifts,
             location: location,
+            toy: toyname,
             timestamp: Date.now()  
         };
 
@@ -142,6 +143,7 @@ document.getElementById('clearStorage').addEventListener('click', () => {
     }
 });
 
+// fetch toy data
 function fetchtoy() {
     availableToys.innerHTML = "";
     fetch(urlToys)
@@ -182,13 +184,15 @@ document.getElementById('toyBtn').addEventListener('click', () => {
         .then(() => {
             document.getElementById('toyInput').value = "";
             fetchtoy();
-            populateList();
+            populateDropdown();
+            
 
         })
         .catch(e => console.error("error adding kid.", e))
 
 })
 
+// delete toy
 function deleteToy(toyId) {
     fetch(`${urlToys}/${toyId}`, {
         method: 'DELETE',
@@ -209,23 +213,36 @@ function deleteToy(toyId) {
         if (toyElement) {
             toyElement.remove();
         }
+        populateDropdown();
     })
     .catch(error => {
         console.error('Error deleting toy:', error);
     });
 }
 
-function populateList(){
-    const toyslist = [];
+// function to fetch toy data and populate the dropdown menu
+function populateDropdown() {
     fetch(urlToys)
     .then(res => res.json())
-    .then(function(result){
-        for(let i = 0; i<result.length; i++) {
-            toyslist.push(result[i])
-        }
-        console.log(toyslist)
+    .then(data => {
+        const dropdown = document.getElementById('toyList');
+        dropdown.innerHTML = '<option value="" disabled selected>Pick a toy</option>';
+        data.forEach(item => {
+            const option = document.createElement('option');
+            option.textContent = item.toyname || item;
+            dropdown.appendChild(option);
+        });
     })
-    .catch();
+    .catch(error => console.error('Error fetching data:', error));
+}
+
+//get text from dropdown menu
+function getToy() {
+    const dropdown = document.getElementById('toyList');
+    const selectedOption = dropdown.options[dropdown.selectedIndex];
+    const selectedText = selectedOption.textContent;
+    console.log(selectedText)
+    return(selectedText)
 }
 
 // edit part
