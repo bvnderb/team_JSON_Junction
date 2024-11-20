@@ -141,7 +141,7 @@ input:focus::-webkit-input-placeholder {
     text-align: center;
 }
 
-.kids-item {
+.kids-item, .toyList {
     background: rgba(255, 255, 255, 0.1);
     margin: 1rem 0;
     padding: 1rem;
