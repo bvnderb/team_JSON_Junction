@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     fetchdata();
     fetchtoy();
+    populateDropdown();
 });
 // declare global variables and placeholders
 
@@ -20,7 +21,7 @@ function fetchdata() {
                 <div class ="kids-item" id="kids-${kids.id}">
                     <span class="kids-content">${kids.kidsName} ${kids.amountGifts} ${kids.location}</span>
 
-                <select id="toyList" class="kids-item"><option>Toy selection</option></select>
+                <select class="toyList" class="kids-item"></select>
                 
                 <div class="edit-form" style="display: none;">
                             <input type="text" class="edit-name" value="${kids.kidsName}">
@@ -36,6 +37,7 @@ function fetchdata() {
                         </div>
                 </div>
                 `;
+                populateDropdown();
             });
         })
         .catch(e => console.error('error fetching child:', e));
@@ -62,6 +64,7 @@ document.getElementById('addkid').addEventListener('click', () => {
             document.getElementById('kidsName').value = "";
             document.getElementById('amountGifts').value = "";
             document.getElementById('location').value = "";
+            populateDropdown();
 
         })
         .catch(e => console.error("error adding kid.", e))
@@ -88,7 +91,7 @@ function loadSavedPosts() {
             const postDiv = document.createElement('div');
             postDiv.className = 'post-item';
             postDiv.innerHTML = `
-                <span>${post.name || 'Unknown Name'} (${post.amount || 0}) (${post.location || 'Unknown Location'}) ${getToy()}</span>
+                <span>${post.name || 'Unknown Name'} (${post.amount || 0}) (${post.location || 'Unknown Location'}) (${post.toy || 'No toy selected'})</span>
                 <button onclick="removeFromSaved('${post.id}')">Remove</button>
             `;
             savedOutput.appendChild(postDiv);
@@ -100,14 +103,14 @@ function loadSavedPosts() {
 }
 
 // Save post to localStorage
-function saveToLocal(kidId, kidname, amountGifts, location, toyname) {
+function saveToLocal(kidId, kidname, amountGifts, location) {
     try {
         const kid = {
             id: kidId,
             name: kidname,  
             amount: amountGifts,
             location: location,
-            toy: toyname,
+            toy: getToy(),
             timestamp: Date.now()  
         };
 
@@ -225,13 +228,15 @@ function populateDropdown() {
     fetch(urlToys)
     .then(res => res.json())
     .then(data => {
-        const dropdown = document.getElementById('toyList');
+        const dropdowns = document.querySelectorAll('.toyList');
+        dropdowns.forEach(dropdown => {
         dropdown.innerHTML = '<option value="" disabled selected>Pick a toy</option>';
         data.forEach(item => {
             const option = document.createElement('option');
             option.textContent = item.toyname || item;
             dropdown.appendChild(option);
-        });
+        })
+    })
     })
     .catch(error => console.error('Error fetching data:', error));
 }
