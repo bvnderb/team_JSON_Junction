@@ -110,7 +110,7 @@ function saveToLocal(kidId, kidname, amountGifts, location) {
             name: kidname,  
             amount: amountGifts,
             location: location,
-            toy: getToy(),
+            toy: getToy(kidId),
             timestamp: Date.now()  
         };
 
@@ -242,12 +242,12 @@ function populateDropdown() {
 }
 
 //get text from dropdown menu
-function getToy() {
-    const dropdown = document.getElementById('toyList');
+function getToy(kidId) {
+    const dropdown = document.querySelector(`#kids-${kidId} .toyList`);
     const selectedOption = dropdown.options[dropdown.selectedIndex];
     const selectedText = selectedOption.textContent;
-    console.log(selectedText)
-    return(selectedText)
+    console.log(selectedText);
+    return(selectedText);
 }
 
 // edit part
